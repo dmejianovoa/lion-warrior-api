@@ -1,0 +1,10 @@
+spring.application.name=lion-warrior-api
+
+spring.datasource.url=jdbc:mysql://localhost:3306/lion_warriordb?serverTimezone=America/Bogota&allowPublicKeyRetrieval=true&useSSL=false
+spring.datasource.username=root
+spring.datasource.password=CONTRASEÑA_MySQL
+
+# El esquema lo define el script SQL: Hibernate no crea ni modifica tablas
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true
+spring.jpa.open-in-view=false
