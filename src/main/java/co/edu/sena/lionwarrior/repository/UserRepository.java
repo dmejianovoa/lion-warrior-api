@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /** Acceso a la tabla users. Spring Data genera las consultas a partir del nombre del método. */
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
     //Busca por Email(Usado por login)
-    Optional<User> findByUser(String email);
+    Optional<User> findByEmail(String email);
 
     // Indica si ya existe un usuario con el mismo email (usado por registro)
     boolean existsByEmail(String email);
