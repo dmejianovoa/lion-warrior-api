@@ -16,7 +16,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     // Errores lanzados a propósito desde los services (401, 404, 409...)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Map<String, String>> handleStatus(ResponseStatusException ex) {
         String reason = ex.getReason() != null ? ex.getReason() : "Error en la ejecución";
         return ResponseEntity.status(ex.getStatusCode()).body(Map.of("mensaje", reason));
