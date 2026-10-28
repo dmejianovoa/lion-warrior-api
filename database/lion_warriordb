@@ -1,0 +1,118 @@
+-- -----------------------------------------------------
+-- Schema lion_warriordb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `lion_warriordb` DEFAULT CHARACTER SET utf8mb4 ;
+USE `lion_warriordb` ;
+
+-- -----------------------------------------------------
+-- Table `lion_warriordb`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lion_warriordb`.`users` (
+  `id_user` INT NOT NULL AUTO_INCREMENT,
+  `user_name` VARCHAR(50) NOT NULL,
+  `last_name` VARCHAR(50) NULL DEFAULT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `phone_number` VARCHAR(15) NULL DEFAULT NULL,
+  `password_hash` VARCHAR(255) NOT NULL,
+  `user_role` ENUM('admin', 'barber', 'client') NULL DEFAULT NULL,
+  PRIMARY KEY (`id_user`),
+  UNIQUE INDEX `uq_users_email` (`email` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `lion_warriordb`.`barbers`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lion_warriordb`.`barbers` (
+  `id_barber` INT NOT NULL AUTO_INCREMENT,
+  `id_user` INT NOT NULL,
+  `is_active` TINYINT(1) NOT NULL DEFAULT '1',
+  `specialty` VARCHAR(100) NULL DEFAULT NULL,
+  `available_schedule` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_barber`),
+  UNIQUE INDEX `uq_barbers_id_user` (`id_user` ASC) VISIBLE,
+  CONSTRAINT `fk_barbers_user`
+    FOREIGN KEY (`id_user`)
+    REFERENCES `lion_warriordb`.`users` (`id_user`)
+    ON DELETE RESTRICT)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `lion_warriordb`.`appointments`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lion_warriordb`.`appointments` (
+  `id_appointment` INT NOT NULL AUTO_INCREMENT,
+  `id_user` INT NOT NULL,
+  `id_barber` INT NOT NULL,
+  `appointment_date` DATE NOT NULL,
+  `appointment_time` TIME NOT NULL,
+  `appointment_status` ENUM('pending', 'confirmed', 'in_progress', 'completed', 'cancelled') NOT NULL DEFAULT 'pending',
+  `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_appointment`),
+  INDEX `fk_appointments_user` (`id_user` ASC) VISIBLE,
+  INDEX `fk_appointments_barber` (`id_barber` ASC) VISIBLE,
+  CONSTRAINT `fk_appointments_barber`
+    FOREIGN KEY (`id_barber`)
+    REFERENCES `lion_warriordb`.`barbers` (`id_barber`)
+    ON DELETE RESTRICT,
+  CONSTRAINT `fk_appointments_user`
+    FOREIGN KEY (`id_user`)
+    REFERENCES `lion_warriordb`.`users` (`id_user`)
+    ON DELETE RESTRICT)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `lion_warriordb`.`services`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lion_warriordb`.`services` (
+  `id_service` INT NOT NULL AUTO_INCREMENT,
+  `service_name` VARCHAR(80) NOT NULL,
+  `service_description` VARCHAR(255) NULL DEFAULT NULL,
+  `service_price` DECIMAL(10,2) NOT NULL,
+  `duration_min` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id_service`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `lion_warriordb`.`appointment_services`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lion_warriordb`.`appointment_services` (
+  `id_appointment_service` INT NOT NULL AUTO_INCREMENT,
+  `id_service` INT NOT NULL,
+  `id_appointment` INT NOT NULL,
+  `subtotal` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`id_appointment_service`),
+  INDEX `fk_apptserv_appointment` (`id_appointment` ASC) VISIBLE,
+  INDEX `fk_apptserv_service` (`id_service` ASC) VISIBLE,
+  CONSTRAINT `fk_apptserv_appointment`
+    FOREIGN KEY (`id_appointment`)
+    REFERENCES `lion_warriordb`.`appointments` (`id_appointment`)
+    ON DELETE CASCADE,
+  CONSTRAINT `fk_apptserv_service`
+    FOREIGN KEY (`id_service`)
+    REFERENCES `lion_warriordb`.`services` (`id_service`)
+    ON DELETE RESTRICT)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+-- -----------------------------------------------------
+-- Table `lion_warriordb`.`products`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lion_warriordb`.`products` (
+  `id_product` INT NOT NULL AUTO_INCREMENT,
+  `product_name` VARCHAR(100) NOT NULL,
+  `product_description` VARCHAR(100) NULL DEFAULT NULL,
+  `price_retail` DECIMAL(10,2) NOT NULL,
+  `price_wholesale` DECIMAL(10,2) NOT NULL,
+  `stock_actual` INT NOT NULL,
+  `stock_minimo` INT NOT NULL,
+  PRIMARY KEY (`id_product`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
