@@ -130,7 +130,7 @@ Los errores de validación (400) empiezan con `Bad Request:` seguido del detalle
 | Barbers | GET | `/api/barbers/{id}` | Consultar un barbero | 200, 404 |
 | Barbers | POST | `/api/barbers` | Crear perfil de barbero | 201, 400, 404, 409 |
 | Barbers | PUT | `/api/barbers/{id}` | Actualizar o desactivar un barbero | 200, 400, 404 |
-| Appointments | GET | `/api/appointments` | Listar citas (`?idUser=` o `?idBarber=`) | 200 |
+| Appointments | GET | `/api/appointments` | Listar citas | 200 |
 | Appointments | GET | `/api/appointments/{id}` | Consultar una cita | 200, 404 |
 | Appointments | POST | `/api/appointments` | Agendar una cita | 201, 400, 404, 409 |
 | Appointments | PATCH | `/api/appointments/{id}/status` | Cambiar el estado de una cita | 200, 400, 404, 409 |
