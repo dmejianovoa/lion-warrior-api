@@ -19,7 +19,7 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     // Convertir texto separado por comas en un arreglo
-    @Value("{app.cors.allowed-origins}")
+    @Value("${app.cors.allowed-origins}")
     private String[] allowedOrigins;
 
     // Origenes vienen de configuración
