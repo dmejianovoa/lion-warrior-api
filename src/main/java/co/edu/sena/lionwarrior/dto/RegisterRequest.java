@@ -19,7 +19,7 @@ public record RegisterRequest(
         String email,
 
         @NotBlank(message = "El telefono es obligatorio")
-        @Pattern(regexp = "^\\d{3}-\\d{3}-\\d{4}$", message = "Formato 300-000-0000")
+        @Pattern(regexp = "^\\d{3} \\d{3} \\d{4}$", message = "Formato 300 000 0000")
         String phoneNumber,
 
         @NotBlank(message = "La contraseña es incorrecta")
